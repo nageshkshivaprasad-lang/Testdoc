@@ -1,0 +1,93 @@
+{
+  "name": "LangFlow: API Test Case Generator with Prompt Chaining",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0045aacb-87c4-4a30-8897-29feccbca470",
+      "name": "When chat message received",
+      "webhookId": "f76547b2-521e-4604-ad81-88e9fa57552c",
+      "notes": "You are an API analyst. Extract all testable requirements from the documentation provided. List each requirement as a numbered item."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a Senior API Tester. Generate test cases based on these requirements: {{ $json.output }}. Format: Test ID | Requirement | Method | Input | Expected Status | Expected Response. Constraints: Cover happy path, negative scenarios, and boundary conditions. Do NOT invent undocumented behavior.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "25b84e9c-bf1b-46eb-b800-5d3441523635",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "054d16a5-a6a8-4d5f-9bc9-92a0714c91d8",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "1I3ccVOaWd1Qx5dS",
+          "name": "Groq account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "dd674971-cf3e-4c25-83f4-511a4e3e1f9b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b31f389eb20b4300bac7922d08b2d7361da09cffa3d9ad39f79980e54b9d196b"
+  },
+  "id": "GGfRBQSekupxNiGi",
+  "tags": []
+}
